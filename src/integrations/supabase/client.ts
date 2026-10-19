@@ -28,8 +28,10 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 
 function createSupabaseClient() {
   // Vite inlines VITE_* variables at build time (set them in the Vercel project env).
-  const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'];
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'];
+  // Use static dot access so Vite replaces only these two values instead of
+  // inlining the whole import.meta.env object (which includes Vercel build metadata).
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+  const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [
