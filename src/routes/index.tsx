@@ -1,22 +1,18 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router";
 import { Radar, BellRing, CalendarX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Brand, SiteFooter } from "@/components/Brand";
 import { Reveal } from "@/components/Reveal";
+import { usePageMeta, type MetaTag } from "@/lib/head";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Flight Price Notifier — 機票降價通知" },
-      { name: "description", content: "Set a route and a target price — we email you when the fare drops. 台北出發熱門航線降價通知。" },
-      { property: "og:title", content: "Flight Price Notifier — 機票降價通知" },
-      { property: "og:description", content: "設定航線與目標價，機票降價就通知你。" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
-});
+const meta: MetaTag[] = [
+  { title: "Flight Price Notifier — 機票降價通知" },
+  { name: "description", content: "Set a route and a target price — we email you when the fare drops. 台北出發熱門航線降價通知。" },
+  { property: "og:title", content: "Flight Price Notifier — 機票降價通知" },
+  { property: "og:description", content: "設定航線與目標價，機票降價就通知你。" },
+  { property: "og:type", content: "website" },
+  { name: "twitter:card", content: "summary_large_image" },
+];
 
 const features = [
   { icon: Radar, title: "盯緊熱門航線", en: "Always-on route watching", body: "持續監控台北出發的熱門航線（東京、首爾），自動抓最低票價。" },
@@ -24,7 +20,8 @@ const features = [
   { icon: CalendarX, title: "隨時取消", en: "Cancel anytime", body: "月訂閱制，不想用隨時停，沒有綁約。" },
 ];
 
-function Index() {
+export function Index() {
+  usePageMeta(meta);
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-20 border-b border-border bg-background/70 backdrop-blur">

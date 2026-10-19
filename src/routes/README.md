@@ -1,21 +1,16 @@
 # Routes
 
-TanStack Start uses **file-based routing**. Every `.tsx` file in this directory
-defines a route. Do **not** create `src/pages/`, `src/routes/_app/index.tsx`, or
-`app/layout.tsx` — those are Next.js / Remix conventions. The only root layout
-is `src/routes/__root.tsx`.
+This is a client-side SPA using **React Router** (data router). Routes are
+declared in `src/router.tsx`; each file here exports a page component.
 
-## Conventions
+| Path | Component | Notes |
+| --- | --- | --- |
+| `/` | `index.tsx` → `Index` | public landing page |
+| `/auth` | `auth.tsx` → `SignIn` | public |
+| `/signup` | `signup.tsx` → `SignUp` | public |
+| `/app` | `app.tsx` → `AppPage` | child of the `authenticated` route (loader redirects to `/auth` when signed out) |
+| `*` | `root.tsx` → `NotFoundComponent` | 404 |
 
-| File | URL |
-| --- | --- |
-| `index.tsx` | `/` |
-| `about.tsx` | `/about` |
-| `users/index.tsx` | `/users` |
-| `users/$id.tsx` | `/users/:id` (dynamic — bare `$`, no curly braces) |
-| `posts/{-$category}.tsx` | `/posts/:category?` (optional segment) |
-| `files/$.tsx` | `/files/*` (splat — read via `_splat` param, never `*`) |
-| `_layout.tsx` | layout route (renders children via `<Outlet />`) |
-| `__root.tsx` | app shell — wraps every page; preserve `<Outlet />` |
-
-`routeTree.gen.ts` is auto-generated. Don't edit it by hand.
+`root.tsx` holds the app shell (`RootComponent`) — preserve its `<Outlet />`.
+Per-page `<title>`/meta tags are set with `usePageMeta` from `src/lib/head.ts`.
+Deep links work in production because `vercel.json` rewrites every path to `index.html`.

@@ -12,5 +12,6 @@
 # AGENTS.md
 
 - Auth uses only the built-in auth users; no custom tables in v1 (app data will live outside the auth backend later).
-- Signed-in pages live under `src/routes/_authenticated/` (client-only gate redirecting to `/auth`); public pages stay top-level.
+- This is a static Vite + React Router SPA (no SSR). Routes are declared in `src/router.tsx`; page components live in `src/routes/`.
+- Signed-in pages are children of the `authenticated` route in `src/router.tsx` (client-only loader gate redirecting to `/auth`); public pages stay top-level.
 - Colors, gradients and glows are tokens/utilities in `src/styles.css`; components use them, never raw colors.
