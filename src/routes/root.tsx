@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 import { queryClient } from "@/lib/query-client";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 export function NotFoundComponent() {
   return (
@@ -33,7 +32,6 @@ export function ErrorComponent() {
   const error = useRouteError();
   useEffect(() => {
     console.error(error);
-    reportLovableError(error, { boundary: "react_router_root_error_element" });
   }, [error]);
 
   return (

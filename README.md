@@ -5,7 +5,7 @@ card 1 : always on-route watching- monitor the route from taipei to paris, japan
 card 2: targeted-price email alert- when price drop below the one you targeted, will remind you right away, with purchase link
 card 3: cancel anytime- monthly subscription, you can unsubscribe anytime, no contract, no extra charge
 footer with copright 『©flight price notifier』 
-authentication using lovable's build-in supabase-style auth(use whatever auth backend lovable provided by default-lovable cloud is find for this vl; we will swap to a user-owned supabase project in the later step)
+authentication using Supabase Auth on the project's own Supabase project
 sign up page with email+password
 sign in page with email+password
 sign out functionality
@@ -17,19 +17,9 @@ A placeholder message: 「你的航線追蹤儀表板即將上線 — 下一個�
 a sign-out button in the header
 design requirements
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/32fc6620-db6e-463d-83e5-f2a4acd82554).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
 git clone <this-repository-url>
@@ -38,7 +28,9 @@ npm i
 npm run dev
 ```
 
-The app is a static Vite + React Router SPA. `npm run build` writes the site to `dist/`.
+The app is a static Vite + React Router SPA backed by Supabase (project `kgguzqmlmgbflfxjgtji`).
+`.env` holds the browser-safe Supabase settings (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`);
+`sb_publishable_*` keys replace the legacy anon key and are protected by RLS. `npm run build` writes the site to `dist/`.
 
 ### Deploying to Vercel
 
