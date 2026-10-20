@@ -31,8 +31,8 @@ export function AppPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="border-b border-border">
+    <div className="flex min-h-screen flex-col bg-sky">
+      <header className="border-b border-border bg-card backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Brand />
           <Button variant="outline" size="sm" onClick={signOut}>
@@ -43,7 +43,7 @@ export function AppPage() {
       <main className="flex-1 bg-hero-glow">
         <div className="mx-auto max-w-3xl px-4 py-20">
           <h1 className="break-all text-3xl font-bold text-foreground sm:text-4xl">Hi {user.email}</h1>
-          <div className="mt-8 rounded-2xl border border-dashed border-primary/40 bg-card p-8">
+          <div className="glass mt-8 rounded-3xl p-8">
             <p className="text-lg text-card-foreground">你的航線追蹤儀表板即將上線 — 下一個里程碑會加上訂閱航線的功能。</p>
             <p className="mt-2 text-sm text-muted-foreground">
               Your dashboard is coming soon. Route-subscription will be added in the next milestone.

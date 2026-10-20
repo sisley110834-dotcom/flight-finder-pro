@@ -27,20 +27,20 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background bg-hero-glow px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-sky px-4">
       <div className="mb-8"><Brand /></div>
-      <form onSubmit={onSubmit} className="w-full max-w-sm space-y-5 rounded-2xl border border-border bg-card p-8 shadow-glow">
+      <form onSubmit={onSubmit} className="glass w-full max-w-sm space-y-5 rounded-3xl p-8">
         <div>
           <h1 className="text-2xl font-semibold text-card-foreground">{isSignup ? "建立帳號 · Sign up" : "登入 · Sign in"}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{isSignup ? "Start watching fares from Taipei." : "Welcome back."}</p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input className="bg-secondary" id="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Password / 密碼</Label>
-          <Input id="password" type="password" required minLength={6} autoComplete={isSignup ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input className="bg-secondary" id="password" type="password" required minLength={6} autoComplete={isSignup ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <Button type="submit" variant="hero" className="w-full" disabled={loading}>
           {loading ? "…" : isSignup ? "Sign up / 註冊" : "Sign in / 登入"}

@@ -23,8 +23,8 @@ const features = [
 export function Index() {
   usePageMeta(meta);
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-20 border-b border-border bg-background/70 backdrop-blur">
+    <div className="min-h-screen bg-sky">
+      <header className="sticky top-0 z-20 border-b border-border bg-card backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Brand />
           <Button asChild variant="hero" size="sm" className="px-5">
@@ -35,9 +35,12 @@ export function Index() {
 
       <main>
         <section className="relative overflow-hidden bg-hero-glow">
-          <div className="mx-auto max-w-4xl px-4 py-24 text-center sm:py-32">
+          <div aria-hidden className="cloud -left-16 -top-6 w-48 sm:left-[2%] sm:top-2 sm:w-64" />
+          <div aria-hidden className="cloud -right-16 top-0 w-52 [animation-delay:-3s] sm:right-[2%] sm:top-6 sm:w-64" />
+          <div aria-hidden className="cloud bottom-6 left-[38%] hidden w-48 [animation-delay:-6s] md:block" />
+          <div className="relative mx-auto max-w-4xl px-4 py-24 text-center sm:py-32">
             <Reveal>
-              <p className="mx-auto mb-6 inline-block rounded-full border border-border bg-card/60 px-4 py-1 text-xs text-muted-foreground">
+              <p className="glass mx-auto mb-6 inline-block rounded-full px-4 py-1 text-xs text-muted-foreground">
                 台北出發 · Taipei departures
               </p>
               <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
@@ -60,8 +63,8 @@ export function Index() {
           <div className="grid gap-6 md:grid-cols-3">
             {features.map((f, i) => (
               <Reveal key={f.en} delay={i * 100}>
-                <div className="h-full rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50">
-                  <div className="mb-5 grid h-11 w-11 place-items-center rounded-xl bg-accent text-primary">
+                <div className="glass h-full rounded-3xl p-6 transition-transform hover:-translate-y-1">
+                  <div className="mb-5 grid h-11 w-11 place-items-center rounded-full bg-accent text-primary shadow-glow">
                     <f.icon className="h-5 w-5" />
                   </div>
                   <h3 className="text-lg font-semibold text-card-foreground">{f.title}</h3>
