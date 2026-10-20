@@ -27,20 +27,20 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-sky px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-paper bg-hero-glow px-4">
       <div className="mb-8"><Brand /></div>
-      <form onSubmit={onSubmit} className="glass w-full max-w-sm space-y-5 rounded-3xl p-8">
+      <form onSubmit={onSubmit} className="label-card w-full max-w-sm space-y-5 rounded-[2rem] p-8">
         <div>
-          <h1 className="text-2xl font-semibold text-card-foreground">{isSignup ? "建立帳號 · Sign up" : "登入 · Sign in"}</h1>
+          <h1 className="font-display text-2xl text-card-foreground">{isSignup ? "建立帳號 · Sign up" : "登入 · Sign in"}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{isSignup ? "Start watching fares from Taipei." : "Welcome back."}</p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input className="bg-secondary" id="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input className="bg-card" id="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Password / 密碼</Label>
-          <Input className="bg-secondary" id="password" type="password" required minLength={6} autoComplete={isSignup ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input className="bg-card" id="password" type="password" required minLength={6} autoComplete={isSignup ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <Button type="submit" variant="hero" className="w-full" disabled={loading}>
           {loading ? "…" : isSignup ? "Sign up / 註冊" : "Sign in / 登入"}

@@ -3,6 +3,7 @@ import { Radar, BellRing, CalendarX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Brand, SiteFooter } from "@/components/Brand";
 import { Reveal } from "@/components/Reveal";
+import { Lemon, OliveSprig, WaveRule } from "@/components/Ornaments";
 import { usePageMeta, type MetaTag } from "@/lib/head";
 
 const meta: MetaTag[] = [
@@ -23,8 +24,8 @@ const features = [
 export function Index() {
   usePageMeta(meta);
   return (
-    <div className="min-h-screen bg-sky">
-      <header className="sticky top-0 z-20 border-b border-border bg-card backdrop-blur-xl">
+    <div className="min-h-screen bg-paper">
+      <header className="sticky top-0 z-20 border-b-2 border-primary bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Brand />
           <Button asChild variant="hero" size="sm" className="px-5">
@@ -35,18 +36,21 @@ export function Index() {
 
       <main>
         <section className="relative overflow-hidden bg-hero-glow">
-          <div aria-hidden className="cloud -left-16 -top-6 w-48 sm:left-[2%] sm:top-2 sm:w-64" />
-          <div aria-hidden className="cloud -right-16 top-0 w-52 [animation-delay:-3s] sm:right-[2%] sm:top-6 sm:w-64" />
-          <div aria-hidden className="cloud bottom-6 left-[38%] hidden w-48 [animation-delay:-6s] md:block" />
-          <div className="relative mx-auto max-w-4xl px-4 py-24 text-center sm:py-32">
+          <OliveSprig className="absolute -left-10 top-6 w-40 sm:left-[4%] sm:w-56" />
+          <Lemon className="absolute bottom-10 left-[6%] w-10 sm:bottom-16 sm:left-[12%] sm:w-14" />
+          <OliveSprig className="absolute -right-10 bottom-8 w-40 -scale-x-100 sm:right-[4%] sm:w-56" />
+          <Lemon className="absolute right-[4%] top-16 w-12 sm:right-[16%] sm:top-20 sm:w-16" />
+          <Lemon className="absolute bottom-24 right-[22%] hidden w-10 md:block" />
+          <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
             <Reveal>
-              <p className="glass mx-auto mb-6 inline-block rounded-full px-4 py-1 text-xs text-muted-foreground">
+              <p className="mx-auto mb-6 inline-block rounded-full border-2 border-primary bg-card px-4 py-1 text-xs font-medium tracking-wider text-primary">
                 台北出發 · Taipei departures
               </p>
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-                Flight Price <span className="text-gradient">Notifier</span>
+              <h1 className="brand-name mx-auto inline-block rounded-[2.5rem] px-6 py-3 text-4xl font-bold shadow-glow sm:px-10 sm:text-6xl">
+                Flight Price Notifier
               </h1>
-              <p className="mt-6 text-xl font-medium text-foreground sm:text-2xl">設定航線與目標價，機票降價就通知你</p>
+              <WaveRule className="mx-auto mt-6 w-48 sm:w-60" />
+              <p className="font-display mt-6 text-xl text-foreground sm:text-2xl">設定航線與目標價，機票降價就通知你</p>
               <p className="mt-3 text-base text-muted-foreground">
                 Set a route and a target price — we email you when the fare drops.
               </p>
@@ -63,12 +67,12 @@ export function Index() {
           <div className="grid gap-6 md:grid-cols-3">
             {features.map((f, i) => (
               <Reveal key={f.en} delay={i * 100}>
-                <div className="glass h-full rounded-3xl p-6 transition-transform hover:-translate-y-1">
-                  <div className="mb-5 grid h-11 w-11 place-items-center rounded-full bg-accent text-primary shadow-glow">
+                <div className="label-card h-full rounded-[2rem] p-6 transition-transform hover:-translate-y-1">
+                  <div className="mb-5 grid h-11 w-11 place-items-center rounded-full border-2 border-primary bg-accent text-primary">
                     <f.icon className="h-5 w-5" />
                   </div>
-                  <h3 className="text-lg font-semibold text-card-foreground">{f.title}</h3>
-                  <p className="text-sm text-primary">{f.en}</p>
+                  <h3 className="font-display text-xl text-card-foreground">{f.title}</h3>
+                  <p className="text-sm font-medium text-olive">{f.en}</p>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
                 </div>
               </Reveal>

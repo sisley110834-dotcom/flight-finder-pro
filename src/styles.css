@@ -10,7 +10,7 @@
  * The @theme inline block maps CSS custom properties to Tailwind utility
  * classes (e.g. --color-primary -> bg-primary, text-primary).
  *
- * The :root block defines the actual color values using oklch (light "air" theme).
+ * The :root block defines the actual color values using oklch (beige "sardine label" theme).
  * All colors MUST use oklch format.
  *
  * To add a new semantic color:
@@ -60,68 +60,59 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-primary-glow: var(--primary-glow);
+  --color-olive: var(--olive);
+  --color-lemon: var(--lemon);
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Product name: PMingLiU (Traditional Chinese Ming serif), with Ming/serif fallbacks for non-Windows. */
+  --font-brand: "PMingLiU", "新細明體", "MingLiU", "Noto Serif TC", serif;
+  --font-display: "DM Serif Display", "Noto Serif TC", Georgia, serif;
 }
 
 :root {
-  /* "air" theme: sky-blue room, soft white clouds, clear glossy inflatable glass. */
+  /* "Sardines à l'huile" theme: beige paper label, cobalt block-print ink, olive leaves, lemons. */
   --radius: 1rem;
-  --background: oklch(0.86 0.06 235);
-  --foreground: oklch(0.27 0.07 252);
-  --card: oklch(1 0 0 / 38%);
-  --card-foreground: oklch(0.27 0.07 252);
-  --popover: oklch(0.97 0.02 235);
-  --popover-foreground: oklch(0.27 0.07 252);
-  --primary: oklch(0.56 0.15 248);
-  --primary-glow: oklch(0.78 0.11 222);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(1 0 0 / 55%);
-  --secondary-foreground: oklch(0.27 0.07 252);
-  --muted: oklch(0.93 0.03 235);
-  --muted-foreground: oklch(0.4 0.06 250);
-  --accent: oklch(1 0 0 / 60%);
-  --accent-foreground: oklch(0.27 0.07 252);
-  --destructive: oklch(0.58 0.2 25);
+  --background: oklch(0.95 0.03 86);
+  --foreground: oklch(0.37 0.14 262);
+  --card: oklch(0.975 0.022 88);
+  --card-foreground: oklch(0.37 0.14 262);
+  --popover: oklch(0.975 0.022 88);
+  --popover-foreground: oklch(0.37 0.14 262);
+  --primary: oklch(0.42 0.15 262);
+  --primary-glow: oklch(0.5 0.15 258);
+  --primary-foreground: oklch(0.995 0 0);
+  --secondary: oklch(0.92 0.04 125);
+  --secondary-foreground: oklch(0.32 0.08 140);
+  --muted: oklch(0.92 0.03 86);
+  --muted-foreground: oklch(0.44 0.07 258);
+  --accent: oklch(0.88 0.16 95);
+  --accent-foreground: oklch(0.37 0.14 262);
+  --destructive: oklch(0.55 0.2 27);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(1 0 0 / 70%);
-  --input: oklch(1 0 0 / 85%);
-  --ring: oklch(0.56 0.15 248);
-  --chart-1: oklch(0.56 0.15 248);
-  --chart-2: oklch(0.78 0.11 222);
-  --chart-3: oklch(0.75 0.15 80);
-  --chart-4: oklch(0.65 0.2 340);
-  --chart-5: oklch(0.7 0.17 150);
-  --sidebar: oklch(0.9 0.04 235);
-  --sidebar-foreground: oklch(0.27 0.07 252);
-  --sidebar-primary: oklch(0.56 0.15 248);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(1 0 0 / 60%);
-  --sidebar-accent-foreground: oklch(0.27 0.07 252);
-  --sidebar-border: oklch(1 0 0 / 70%);
-  --sidebar-ring: oklch(0.56 0.15 248);
-  --cloud: oklch(0.99 0.005 90);
-  --sky-top: oklch(0.72 0.11 240);
-  --sky-bottom: oklch(0.88 0.05 228);
-  --gradient-primary:
-    linear-gradient(180deg, oklch(1 0 0 / 38%), transparent 55%),
-    linear-gradient(135deg, var(--primary), var(--primary-glow));
+  --border: oklch(0.42 0.15 262 / 55%);
+  --input: oklch(0.42 0.15 262 / 45%);
+  --ring: oklch(0.42 0.15 262);
+  --chart-1: oklch(0.42 0.15 262);
+  --chart-2: oklch(0.5 0.1 140);
+  --chart-3: oklch(0.85 0.16 95);
+  --chart-4: oklch(0.6 0.15 30);
+  --chart-5: oklch(0.6 0.1 200);
+  --sidebar: oklch(0.93 0.03 86);
+  --sidebar-foreground: oklch(0.37 0.14 262);
+  --sidebar-primary: oklch(0.42 0.15 262);
+  --sidebar-primary-foreground: oklch(0.995 0 0);
+  --sidebar-accent: oklch(0.88 0.16 95);
+  --sidebar-accent-foreground: oklch(0.37 0.14 262);
+  --sidebar-border: oklch(0.42 0.15 262 / 55%);
+  --sidebar-ring: oklch(0.42 0.15 262);
+  --olive: oklch(0.48 0.1 140);
+  --lemon: oklch(0.86 0.17 92);
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
   --gradient-text: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-radial: radial-gradient(60% 55% at 50% 0%, oklch(1 0 0 / 55%), transparent 70%);
-  --gradient-sky:
-    radial-gradient(ellipse 26% 10% at 12% 22%, oklch(1 0 0 / 70%), transparent 70%),
-    radial-gradient(ellipse 18% 7% at 22% 26%, oklch(1 0 0 / 55%), transparent 70%),
-    radial-gradient(ellipse 30% 11% at 86% 38%, oklch(1 0 0 / 65%), transparent 70%),
-    radial-gradient(ellipse 20% 8% at 74% 42%, oklch(1 0 0 / 50%), transparent 70%),
-    radial-gradient(ellipse 34% 12% at 30% 78%, oklch(1 0 0 / 55%), transparent 70%),
-    radial-gradient(ellipse 28% 10% at 80% 88%, oklch(1 0 0 / 50%), transparent 70%),
-    linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
-  --shadow-glow:
-    inset 0 1px 0 oklch(1 0 0 / 75%),
-    0 12px 32px -12px color-mix(in oklab, var(--primary) 55%, transparent);
-  --shadow-glass:
-    inset 0 1px 0 oklch(1 0 0 / 90%),
-    inset 0 -10px 28px oklch(1 0 0 / 18%),
-    0 24px 48px -24px color-mix(in oklab, var(--foreground) 35%, transparent);
+  --gradient-radial: radial-gradient(55% 45% at 50% 0%, color-mix(in oklab, var(--lemon) 22%, transparent), transparent 70%);
+  /* Fine paper grain (inline SVG noise) layered over the beige stock. */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.25 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --shadow-glow: 3px 3px 0 color-mix(in oklab, var(--primary) 85%, transparent);
+  --shadow-print: 5px 5px 0 color-mix(in oklab, var(--primary) 90%, transparent);
 }
 
 @layer base {
@@ -131,8 +122,7 @@
 
   body {
     background-color: var(--color-background);
-    background-image: var(--gradient-sky);
-    background-attachment: fixed;
+    background-image: var(--paper-grain);
     color: var(--color-foreground);
   }
 }
@@ -146,36 +136,27 @@
 @utility shadow-glow {
   box-shadow: var(--shadow-glow);
 }
-@utility bg-sky {
-  background-color: var(--sky-bottom);
-  background-image: var(--gradient-sky);
-  background-attachment: fixed;
+/* Beige paper page background with grain. */
+@utility bg-paper {
+  background-color: var(--background);
+  background-image: var(--paper-grain);
 }
-/* Clear inflatable "glass": frosted translucent white with a glossy top edge. */
-@utility glass {
-  background-image: linear-gradient(160deg, oklch(1 0 0 / 58%), oklch(1 0 0 / 22%));
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-glass);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
+/* Printed label panel: lighter paper, cobalt ink outline, offset print shadow. */
+@utility label-card {
+  background-color: var(--card);
+  background-image: var(--paper-grain);
+  border: 2px solid var(--primary);
+  box-shadow: var(--shadow-print);
 }
-/* Soft hanging cloud built from overlapping puffs; purely decorative. */
-@utility cloud {
-  position: absolute;
-  pointer-events: none;
-  aspect-ratio: 2.2 / 1;
-  background:
-    radial-gradient(circle at 30% 60%, var(--cloud) 0 22%, transparent 23%),
-    radial-gradient(circle at 50% 42%, var(--cloud) 0 28%, transparent 29%),
-    radial-gradient(circle at 70% 58%, var(--cloud) 0 24%, transparent 25%),
-    radial-gradient(ellipse 46% 30% at 50% 70%, var(--cloud) 0 99%, transparent 100%);
-  filter: blur(2px) drop-shadow(0 12px 18px color-mix(in oklab, var(--foreground) 18%, transparent));
-  opacity: 0.95;
-  animation: cloud-float 9s ease-in-out infinite alternate;
+/* Product name: white PMingLiU on a cobalt ink plaque. */
+@utility brand-name {
+  font-family: var(--font-brand);
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  letter-spacing: 0.02em;
 }
-@keyframes cloud-float {
-  from { transform: translateY(0); }
-  to { transform: translateY(10px); }
+@utility font-display {
+  font-family: var(--font-display);
 }
 @utility text-gradient {
   background-image: var(--gradient-text);
@@ -183,16 +164,7 @@
   background-clip: text;
   color: transparent;
 }
+/* Content is shown immediately — no fade-in. */
 @utility reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-  &.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .cloud { animation: none; }
+  opacity: 1;
 }
