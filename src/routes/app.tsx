@@ -5,6 +5,7 @@ import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Brand, SiteFooter } from "@/components/Brand";
+import { PlanCards } from "@/components/PlanCards";
 import { usePageMeta, type MetaTag } from "@/lib/head";
 
 const meta: MetaTag[] = [
@@ -42,13 +43,16 @@ export function AppPage() {
       </header>
       <main className="flex-1 bg-hero-glow">
         <div className="mx-auto max-w-3xl px-4 py-20">
-          <h1 className="font-display break-all text-3xl text-foreground sm:text-4xl">Hi {user.email}</h1>
-          <div className="label-card mt-8 rounded-[2rem] p-8">
-            <p className="text-lg text-card-foreground">你的航線追蹤儀表板即將上線 — 下一個里程碑會加上訂閱航線的功能。</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Your dashboard is coming soon. Route-subscription will be added in the next milestone.
-            </p>
-          </div>
+          <h1 className="font-display break-all text-3xl text-foreground sm:text-4xl">
+            Hi {user.email}
+          </h1>
+          <p className="mt-4 text-card-foreground">
+            選一條航線、設定目標價，票價跌到目標以下時我們會寄信通知你。
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pick a route and a target price; we'll email you when the fare drops below it.
+          </p>
+          <PlanCards email={user.email ?? ""} />
         </div>
       </main>
       <SiteFooter />
