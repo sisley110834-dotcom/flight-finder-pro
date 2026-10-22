@@ -6,7 +6,7 @@ import { routes } from "@/router";
 // Match routes without running loaders or rendering: loaders need Supabase, which
 // the test run lacks.
 describe("App routing", () => {
-  it.each(["/", "/auth", "/signup", "/app"])(
+  it.each(["/", "/auth", "/signup", "/forgot-password", "/reset-password", "/app"])(
     "matches a page for %s instead of falling back to not found",
     (path) => {
       const matches = matchRoutes(routes, path);
