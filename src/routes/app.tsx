@@ -1,7 +1,9 @@
-import { useNavigate, useRouteLoaderData } from "react-router";
+import { useEffect } from "react";
+import { useNavigate, useRouteLoaderData, useSearchParams } from "react-router";
 import type { User } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Brand, SiteFooter } from "@/components/Brand";
@@ -23,6 +25,26 @@ export function AppPage() {
   const { user } = useRouteLoaderData("authenticated") as { user: User };
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [params, setParams] = useSearchParams();
+  const purchase = params.get("purchase");
+
+  // ECPay sends the browser back here after checkout. This is only a message: the
+  // subscription is activated by ECPay's server-to-server callback, which may land a moment later.
+  useEffect(() => {
+    if (!purchase) return;
+    if (purchase === "success") {
+      toast.success("付款完成！訂閱啟用後就會開始寄送降價通知。");
+      const t = setTimeout(
+        () => queryClient.invalidateQueries({ queryKey: ["subscriptions"] }),
+        3000,
+      );
+      setParams({}, { replace: true });
+      return () => clearTimeout(t);
+    }
+    toast.error("付款未完成，可以在卡片上按「完成付款」再試一次。");
+    setParams({}, { replace: true });
+    return undefined;
+  }, [purchase, queryClient, setParams]);
 
   async function signOut() {
     await queryClient.cancelQueries();

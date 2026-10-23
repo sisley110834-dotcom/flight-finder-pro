@@ -6,7 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { listSubscriptions, subscribe, type PlanName, type Subscription } from "@/lib/flight-api";
+import {
+  MONTHLY_PRICE_TWD,
+  cancelSubscription,
+  listSubscriptions,
+  subscribe,
+  type PlanName,
+  type Subscription,
+} from "@/lib/flight-api";
 
 const PLANS: { name: PlanName; title: string; route: string; hint: number }[] = [
   { name: "tokyo", title: "台北 ✈ 東京", route: "TPE-TYO", hint: 9325 },
@@ -37,6 +44,30 @@ export function PlanCards({ email }: { email: string }) {
   );
 }
 
+type CardState = "none" | "unpaid" | "active" | "grace" | "ended";
+
+function cardState(sub: Subscription | undefined): CardState {
+  if (!sub) return "none";
+  const status = sub.subscription_status;
+  if (status === "active") return "active";
+  if (status === "cancelled") {
+    const end = sub.current_period_end;
+    return end && new Date(end).getTime() >= Date.now() ? "grace" : "ended";
+  }
+  if (status === "expired") return "ended";
+  return "unpaid";
+}
+
+const BADGE: Record<
+  Exclude<CardState, "none">,
+  { text: string; variant: "default" | "secondary" | "outline" | "destructive" }
+> = {
+  active: { text: "已訂閱", variant: "default" },
+  unpaid: { text: "未完成付款", variant: "destructive" },
+  grace: { text: "已取消", variant: "secondary" },
+  ended: { text: "已結束", variant: "outline" },
+};
+
 function PlanCard({
   plan,
   email,
@@ -51,13 +82,27 @@ function PlanCard({
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState(false);
   const [price, setPrice] = useState("");
+  const state = cardState(current);
+  const paid = state === "active" || state === "grace";
+  const endDate = current?.current_period_end_date ?? current?.current_period_end?.slice(0, 10);
 
   const mutation = useMutation({
     mutationFn: (target_price: number) => subscribe({ email, plan_name: plan.name, target_price }),
-    onSuccess: async () => {
-      toast.success(`已開始追蹤 ${plan.title}`);
+    onSuccess: async (result) => {
+      // "checkout" has already replaced the page with the ECPay cashier.
+      if (result !== "updated") return;
+      toast.success(`已更新 ${plan.title} 的目標價`);
       setEditing(false);
       setPrice("");
+      await queryClient.invalidateQueries({ queryKey: ["subscriptions", email] });
+    },
+    onError: (err: Error) => toast.error(err.message),
+  });
+
+  const cancel = useMutation({
+    mutationFn: () => cancelSubscription({ email, route: plan.route }),
+    onSuccess: async () => {
+      toast.success(`已取消 ${plan.title} 訂閱，已付費期間內仍會通知你`);
       await queryClient.invalidateQueries({ queryKey: ["subscriptions", email] });
     },
     onError: (err: Error) => toast.error(err.message),
@@ -73,8 +118,24 @@ function PlanCard({
     mutation.mutate(Math.round(n));
   }
 
-  const showForm = !current || editing;
+  function confirmCancel() {
+    if (
+      window.confirm(
+        `確定要取消 ${plan.title} 訂閱嗎？之後不會再扣款，${endDate ?? "本期結束"} 前仍會通知你。`,
+      )
+    ) {
+      cancel.mutate();
+    }
+  }
+
+  const busy = loading || mutation.isPending || cancel.isPending;
+  const showForm = state === "none" || state === "ended" || editing;
   const inputId = `target-${plan.name}`;
+  const submitLabel = mutation.isPending
+    ? "送出中…"
+    : paid
+      ? "儲存"
+      : `訂閱並付款 NT$${MONTHLY_PRICE_TWD}/月`;
 
   return (
     <div className="label-card rounded-[2rem] p-6">
@@ -82,17 +143,44 @@ function PlanCard({
         <h2 className="font-display flex items-center gap-2 text-2xl text-card-foreground">
           <Plane className="size-5" /> {plan.title}
         </h2>
-        {current && <Badge>已訂閱</Badge>}
+        {state !== "none" && <Badge variant={BADGE[state].variant}>{BADGE[state].text}</Badge>}
       </div>
       <p className="mt-2 text-sm text-muted-foreground">最近最低價約 {twd(plan.hint)}</p>
 
-      {current && !editing && (
+      {current && state !== "ended" && !editing && (
         <div className="mt-4">
           <p className="text-card-foreground">目前目標價：{twd(current.target_price)}</p>
-          <Button className="mt-4" variant="outline" onClick={() => setEditing(true)}>
-            更新目標價
-          </Button>
+          {state === "active" && endDate && (
+            <p className="mt-1 text-sm text-muted-foreground">本期有效至 {endDate}，每月自動續訂</p>
+          )}
+          {state === "grace" && (
+            <p className="mt-1 text-sm text-muted-foreground">
+              有效至 {endDate}（仍會通知到該日，之後不再扣款）
+            </p>
+          )}
+          {state === "unpaid" && (
+            <p className="mt-1 text-sm text-muted-foreground">付款完成後才會開始寄送降價通知。</p>
+          )}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {state === "unpaid" && (
+              <Button onClick={() => mutation.mutate(current.target_price)} disabled={busy}>
+                {mutation.isPending ? "前往付款…" : `完成付款 NT$${MONTHLY_PRICE_TWD}/月`}
+              </Button>
+            )}
+            <Button variant="outline" onClick={() => setEditing(true)} disabled={busy}>
+              更新目標價
+            </Button>
+            {state === "active" && (
+              <Button variant="ghost" onClick={confirmCancel} disabled={busy}>
+                {cancel.isPending ? "取消中…" : "取消訂閱"}
+              </Button>
+            )}
+          </div>
         </div>
+      )}
+
+      {state === "ended" && !editing && (
+        <p className="mt-4 text-sm text-muted-foreground">訂閱已結束，重新付款即可恢復通知。</p>
       )}
 
       {showForm && (
@@ -106,13 +194,17 @@ function PlanCard({
             placeholder={String(current?.target_price ?? plan.hint + 1000)}
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            disabled={loading || mutation.isPending}
+            disabled={busy}
           />
           <div className="flex gap-2">
-            <Button type="submit" disabled={loading || mutation.isPending}>
-              {mutation.isPending ? "送出中…" : current ? "儲存" : "開始追蹤"}
+            <Button type="submit" disabled={busy}>
+              {state === "ended" && !editing
+                ? mutation.isPending
+                  ? "送出中…"
+                  : "重新訂閱"
+                : submitLabel}
             </Button>
-            {current && (
+            {editing && (
               <Button type="button" variant="ghost" onClick={() => setEditing(false)}>
                 取消
               </Button>
