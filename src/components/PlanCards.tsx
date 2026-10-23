@@ -11,6 +11,7 @@ import { listSubscriptions, subscribe, type PlanName, type Subscription } from "
 const PLANS: { name: PlanName; title: string; route: string; hint: number }[] = [
   { name: "tokyo", title: "台北 ✈ 東京", route: "TPE-TYO", hint: 9325 },
   { name: "seoul", title: "台北 ✈ 首爾", route: "TPE-SEL", hint: 5989 },
+  { name: "paris", title: "台北 ✈ 巴黎", route: "TPE-PAR", hint: 24846 },
 ];
 
 const twd = (n: number) => `NT$${n.toLocaleString("en-US")}`;
