@@ -87,7 +87,8 @@ function PlanCard({
   const endDate = current?.current_period_end_date ?? current?.current_period_end?.slice(0, 10);
 
   const mutation = useMutation({
-    mutationFn: (target_price: number) => subscribe({ email, plan_name: plan.name, target_price }),
+    mutationFn: ({ target_price, resubscribe }: { target_price: number; resubscribe?: boolean }) =>
+      subscribe({ email, plan_name: plan.name, target_price, resubscribe }),
     onSuccess: async (result) => {
       // "checkout" has already replaced the page with the ECPay cashier.
       if (result !== "updated") return;
@@ -115,7 +116,7 @@ function PlanCard({
       toast.error("請輸入正確的目標價 (TWD)");
       return;
     }
-    mutation.mutate(Math.round(n));
+    mutation.mutate({ target_price: Math.round(n) });
   }
 
   function confirmCancel() {
@@ -163,13 +164,26 @@ function PlanCard({
           )}
           <div className="mt-4 flex flex-wrap gap-2">
             {state === "unpaid" && (
-              <Button onClick={() => mutation.mutate(current.target_price)} disabled={busy}>
+              <Button
+                onClick={() => mutation.mutate({ target_price: current.target_price })}
+                disabled={busy}
+              >
                 {mutation.isPending ? "前往付款…" : `完成付款 NT$${MONTHLY_PRICE_TWD}/月`}
               </Button>
             )}
             <Button variant="outline" onClick={() => setEditing(true)} disabled={busy}>
               更新目標價
             </Button>
+            {state === "grace" && (
+              <Button
+                onClick={() =>
+                  mutation.mutate({ target_price: current.target_price, resubscribe: true })
+                }
+                disabled={busy}
+              >
+                {mutation.isPending ? "前往付款…" : `重新訂閱 NT$${MONTHLY_PRICE_TWD}/月`}
+              </Button>
+            )}
             {state === "active" && (
               <Button variant="ghost" onClick={confirmCancel} disabled={busy}>
                 {cancel.isPending ? "取消中…" : "取消訂閱"}

@@ -34,6 +34,8 @@ export async function subscribe(input: {
   email: string;
   plan_name: PlanName;
   target_price: number;
+  // Start a new paid order for a cancelled subscription that is still in its paid period.
+  resubscribe?: boolean | undefined;
 }): Promise<"checkout" | "updated"> {
   const res = await fetch(`${FLIGHT_API_URL}/subscribe`, {
     method: "POST",
