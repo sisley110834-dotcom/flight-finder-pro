@@ -67,10 +67,8 @@ export function RootComponent() {
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      setTimeout(() => {
-        revalidator.revalidate();
-        if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
-      }, 0);
+      revalidator.revalidate();
+      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
     });
     return () => data.subscription.unsubscribe();
     // `revalidator` changes identity on every navigation state change; subscribe once.
