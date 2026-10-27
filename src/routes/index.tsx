@@ -35,7 +35,7 @@ export function Index() {
 
       <main>
         <section className="relative overflow-hidden">
-          <img src={flightSky} alt="An airplane above the clouds" width={1536} height={1024} className="absolute inset-0 h-full w-full object-cover object-center" />
+          <img src={flightSky} alt="An airplane above the clouds" width={1536} height={1024} className="absolute inset-0 h-full w-full object-cover object-left sm:object-center" />
           <div className="relative mx-auto max-w-6xl px-6 py-14 sm:px-8 sm:py-20">
             <div className="max-w-2xl">
               <p className="mb-5 text-sm font-semibold text-foreground">
