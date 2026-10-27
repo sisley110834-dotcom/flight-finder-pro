@@ -64,55 +64,53 @@
   --color-lemon: var(--lemon);
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   /* Product name: PMingLiU (Traditional Chinese Ming serif), with Ming/serif fallbacks for non-Windows. */
-  --font-brand: "PMingLiU", "新細明體", "MingLiU", "Noto Serif TC", serif;
-  --font-display: "DM Serif Display", "Noto Serif TC", Georgia, serif;
+  --font-brand: "Pacifico", "Brush Script MT", cursive;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  /* "Sardines à l'huile" theme: beige paper label, cobalt block-print ink, olive leaves, lemons. */
-  --radius: 1rem;
-  --background: oklch(0.95 0.03 86);
-  --foreground: oklch(0.37 0.14 262);
-  --card: oklch(0.975 0.022 88);
-  --card-foreground: oklch(0.37 0.14 262);
-  --popover: oklch(0.975 0.022 88);
-  --popover-foreground: oklch(0.37 0.14 262);
-  --primary: oklch(0.42 0.15 262);
-  --primary-glow: oklch(0.5 0.15 258);
-  --primary-foreground: oklch(0.995 0 0);
-  --secondary: oklch(0.92 0.04 125);
-  --secondary-foreground: oklch(0.32 0.08 140);
-  --muted: oklch(0.92 0.03 86);
-  --muted-foreground: oklch(0.44 0.07 258);
-  --accent: oklch(0.88 0.16 95);
-  --accent-foreground: oklch(0.37 0.14 262);
-  --destructive: oklch(0.55 0.2 27);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.42 0.15 262 / 55%);
-  --input: oklch(0.42 0.15 262 / 45%);
-  --ring: oklch(0.42 0.15 262);
-  --chart-1: oklch(0.42 0.15 262);
-  --chart-2: oklch(0.5 0.1 140);
-  --chart-3: oklch(0.85 0.16 95);
-  --chart-4: oklch(0.6 0.15 30);
-  --chart-5: oklch(0.6 0.1 200);
-  --sidebar: oklch(0.93 0.03 86);
-  --sidebar-foreground: oklch(0.37 0.14 262);
-  --sidebar-primary: oklch(0.42 0.15 262);
-  --sidebar-primary-foreground: oklch(0.995 0 0);
-  --sidebar-accent: oklch(0.88 0.16 95);
-  --sidebar-accent-foreground: oklch(0.37 0.14 262);
-  --sidebar-border: oklch(0.42 0.15 262 / 55%);
-  --sidebar-ring: oklch(0.42 0.15 262);
-  --olive: oklch(0.48 0.1 140);
-  --lemon: oklch(0.86 0.17 92);
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-text: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-radial: radial-gradient(55% 45% at 50% 0%, color-mix(in oklab, var(--lemon) 22%, transparent), transparent 70%);
-  /* Fine paper grain (inline SVG noise) layered over the beige stock. */
-  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.25 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --shadow-glow: 3px 3px 0 color-mix(in oklab, var(--primary) 85%, transparent);
-  --shadow-print: 5px 5px 0 color-mix(in oklab, var(--primary) 90%, transparent);
+  --radius: 0.5rem;
+  --background: hsl(42 35% 94%);
+  --foreground: hsl(207 30% 20%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(207 30% 20%);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --primary: hsl(204 83% 38%);
+  --primary-glow: hsl(204 78% 46%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(202 62% 92%);
+  --secondary-foreground: hsl(204 83% 30%);
+  --muted: hsl(42 22% 89%);
+  --muted-foreground: hsl(207 14% 42%);
+  --accent: hsl(202 62% 92%);
+  --accent-foreground: var(--primary);
+  --destructive: hsl(0 70% 45%);
+  --destructive-foreground: var(--primary-foreground);
+  --border: hsl(42 18% 82%);
+  --input: hsl(207 18% 75%);
+  --ring: var(--primary);
+  --chart-1: var(--primary);
+  --chart-2: hsl(150 30% 40%);
+  --chart-3: hsl(45 70% 60%);
+  --chart-4: hsl(10 60% 55%);
+  --chart-5: hsl(190 45% 40%);
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  --olive: var(--muted-foreground);
+  --lemon: var(--accent);
+  --gradient-primary: none;
+  --gradient-text: none;
+  --gradient-radial: none;
+  --paper-grain: none;
+  --shadow-glow: 0 2px 4px hsl(207 30% 20% / 8%);
+  --shadow-print: 0 3px 12px hsl(207 30% 20% / 4%);
 }
 
 @layer base {
@@ -145,15 +143,14 @@
 @utility label-card {
   background-color: var(--card);
   background-image: var(--paper-grain);
-  border: 2px solid var(--primary);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-print);
 }
 /* Product name: white PMingLiU on a cobalt ink plaque. */
 @utility brand-name {
   font-family: var(--font-brand);
-  color: var(--primary-foreground);
-  background-color: var(--primary);
-  letter-spacing: 0.02em;
+  color: var(--primary);
+  letter-spacing: 0;
 }
 @utility font-display {
   font-family: var(--font-display);
@@ -167,4 +164,11 @@
 /* Content is shown immediately — no fade-in. */
 @utility reveal {
   opacity: 1;
+}
+
+@layer base {
+  * { letter-spacing: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 }
