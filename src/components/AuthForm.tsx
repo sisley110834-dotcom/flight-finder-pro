@@ -18,7 +18,7 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
     e.preventDefault();
     setLoading(true);
     const { data, error } = isSignup
-      ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/app" } })
+      ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/auth" } })
       : await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
@@ -30,9 +30,9 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-paper bg-hero-glow px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-4 py-12">
       <div className="mb-8"><Brand /></div>
-      <form onSubmit={onSubmit} className="label-card w-full max-w-sm space-y-5 rounded-[2rem] p-8">
+      <form onSubmit={onSubmit} className="label-card w-full max-w-sm space-y-5 rounded-lg p-8">
         <div>
           <h1 className="font-display text-2xl text-card-foreground">{isSignup ? "建立帳號 · Sign up" : "登入 · Sign in"}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{isSignup ? "Start watching fares from Taipei." : "Welcome back."}</p>
