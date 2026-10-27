@@ -24,7 +24,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <div className="mb-8">
         <Brand />
       </div>
-      <div className="label-card w-full max-w-sm space-y-5 rounded-lg p-8">{children}</div>
+      <div className="label-card w-full max-w-sm space-y-5 rounded-[2rem] p-8">{children}</div>
     </div>
   );
 }

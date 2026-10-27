@@ -7,14 +7,14 @@ export function Brand() {
       <span className="grid h-8 w-8 place-items-center rounded-full bg-primary">
         <Plane className="h-4 w-4 text-primary-foreground" />
       </span>
-      <span className="brand-name text-sm sm:text-base">Flight Price Notifier</span>
+      <span className="brand-name hidden rounded-full px-3 py-1 text-base sm:inline">Flight Price Notifier</span>
     </Link>
   );
 }
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border text-muted-foreground py-8 text-center text-sm">
+    <footer className="brand-name border-t-2 border-primary py-8 text-center text-sm">
       © 2026 Flight Price Notifier
     </footer>
   );
