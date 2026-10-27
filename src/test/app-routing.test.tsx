@@ -26,7 +26,7 @@ describe("App routing", () => {
     getUser.mockResolvedValue({ data: { user: null } });
     const gate = routes[0]?.children?.find((route) => route.id === "authenticated");
     if (typeof gate?.loader !== "function") throw new Error("Auth gate missing");
-    const result = await Promise.resolve(gate.loader({ request: new Request("http://localhost/app"), params: {}, context: undefined }, undefined)).catch((error: Response) => error);
+    const result = await Promise.resolve(gate.loader({ request: new Request("http://localhost/app"), url: new URL("http://localhost/app"), pattern: "/app", params: {}, context: undefined }, undefined)).catch((error: Response) => error);
     expect(result).toBeInstanceOf(Response);
     expect((result as Response).headers.get("Location")).toBe("/auth");
   });
@@ -35,7 +35,7 @@ describe("App routing", () => {
     getUser.mockResolvedValue({ data: { user: { id: "test-user", email: "user@example.com" } } });
     const gate = routes[0]?.children?.find((route) => route.id === "authenticated");
     if (typeof gate?.loader !== "function") throw new Error("Auth gate missing");
-    const result = await gate.loader({ request: new Request("http://localhost/app"), params: {}, context: undefined }, undefined);
+    const result = await gate.loader({ request: new Request("http://localhost/app"), url: new URL("http://localhost/app"), pattern: "/app", params: {}, context: undefined }, undefined);
     expect(result).toEqual({ user: { id: "test-user", email: "user@example.com" } });
   });
 });
