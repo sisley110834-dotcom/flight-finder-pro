@@ -5,6 +5,7 @@ import { Index } from "./routes/index";
 import { SignIn } from "./routes/auth";
 import { SignUp } from "./routes/signup";
 import { AppPage } from "./routes/app";
+import { ForgotPassword, ResetPassword } from "./routes/password";
 
 // Client-only gate for signed-in pages: redirects to /auth when there is no user.
 async function requireUser() {
@@ -21,6 +22,8 @@ export const routes: RouteObject[] = [
       { index: true, element: <Index /> },
       { path: "auth", element: <SignIn /> },
       { path: "signup", element: <SignUp /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "reset-password", element: <ResetPassword /> },
       {
         id: "authenticated",
         loader: requireUser,

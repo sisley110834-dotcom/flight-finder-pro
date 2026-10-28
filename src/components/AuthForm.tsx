@@ -21,7 +21,10 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
       ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/app" } })
       : await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.code === "invalid_credentials" ? "Email 或密碼錯誤 · Wrong email or password. 忘記密碼可點下方連結重設。" : error.message);
+      return;
+    }
     if (!data.session) { toast.success("請到信箱確認帳號 · Check your email to confirm."); return; }
     navigate("/app", { replace: true });
   }
@@ -41,6 +44,11 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
         <div className="space-y-2">
           <Label htmlFor="password">Password / 密碼</Label>
           <Input className="bg-card" id="password" type="password" required minLength={6} autoComplete={isSignup ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} />
+          {!isSignup && (
+            <p className="text-right text-sm">
+              <Link to="/forgot-password" className="text-primary hover:underline">忘記密碼？ Forgot password</Link>
+            </p>
+          )}
         </div>
         <Button type="submit" variant="hero" className="w-full" disabled={loading}>
           {loading ? "…" : isSignup ? "Sign up / 註冊" : "Sign in / 登入"}
