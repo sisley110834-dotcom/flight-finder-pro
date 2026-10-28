@@ -46,7 +46,7 @@ export function Index() {
               <p className="mx-auto mb-6 inline-block rounded-full border-2 border-primary bg-card px-4 py-1 text-xs font-medium tracking-wider text-primary">
                 台北出發 · Taipei departures
               </p>
-              <h1 className="brand-name mx-auto inline-block rounded-[2.5rem] px-6 py-3 text-4xl font-bold shadow-glow sm:px-10 sm:text-6xl">
+              <h1 className="brand-name text-6xl leading-tight sm:text-8xl">
                 Flight Price Notifier
               </h1>
               <WaveRule className="mx-auto mt-6 w-48 sm:w-60" />
