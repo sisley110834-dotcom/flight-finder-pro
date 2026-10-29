@@ -1,3 +1,5 @@
+import { translate } from "@/lib/i18n";
+
 // Flight Price Notifier backend (AWS API Gateway). Public endpoint; the browser holds no AWS credentials.
 export const FLIGHT_API_URL =
   import.meta.env["VITE_FLIGHT_API_URL"] ??
@@ -25,7 +27,7 @@ export type Subscription = {
 
 export async function listSubscriptions(email: string): Promise<Subscription[]> {
   const res = await fetch(`${FLIGHT_API_URL}/subscriptions?email=${encodeURIComponent(email)}`);
-  if (!res.ok) throw new Error(`讀取訂閱失敗 (${res.status})`);
+  if (!res.ok) throw new Error(translate("api.loadFailed", { status: res.status }));
   const body = (await res.json()) as { items: Subscription[] };
   return body.items;
 }
@@ -44,7 +46,7 @@ export async function subscribe(input: {
   });
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(body.error ?? `訂閱失敗 (${res.status})`);
+    throw new Error(body.error ?? translate("api.subscribeFailed", { status: res.status }));
   }
   // Unpaid: the API returns an auto-submitting ECPay checkout form. Paid (or cancelled but
   // still in its paid period): the target price was updated in place and the API returns JSON.
@@ -66,6 +68,6 @@ export async function cancelSubscription(input: { email: string; route: string }
   });
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(body.error ?? `取消訂閱失敗 (${res.status})`);
+    throw new Error(body.error ?? translate("api.cancelFailed", { status: res.status }));
   }
 }

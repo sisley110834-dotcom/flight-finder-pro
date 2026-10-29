@@ -14,11 +14,12 @@ import {
   type PlanName,
   type Subscription,
 } from "@/lib/flight-api";
+import { useT, type MessageKey } from "@/lib/i18n";
 
-const PLANS: { name: PlanName; title: string; route: string; hint: number }[] = [
-  { name: "tokyo", title: "台北 ✈ 東京", route: "TPE-TYO", hint: 9325 },
-  { name: "seoul", title: "台北 ✈ 首爾", route: "TPE-SEL", hint: 5989 },
-  { name: "paris", title: "台北 ✈ 巴黎", route: "TPE-PAR", hint: 24846 },
+const PLANS: { name: PlanName; titleKey: MessageKey; route: string; hint: number }[] = [
+  { name: "tokyo", titleKey: "plan.tokyo", route: "TPE-TYO", hint: 9325 },
+  { name: "seoul", titleKey: "plan.seoul", route: "TPE-SEL", hint: 5989 },
+  { name: "paris", titleKey: "plan.paris", route: "TPE-PAR", hint: 24846 },
 ];
 
 const twd = (n: number) => `NT$${n.toLocaleString("en-US")}`;
@@ -60,12 +61,12 @@ function cardState(sub: Subscription | undefined): CardState {
 
 const BADGE: Record<
   Exclude<CardState, "none">,
-  { text: string; variant: "default" | "secondary" | "outline" | "destructive" }
+  { textKey: MessageKey; variant: "default" | "secondary" | "outline" | "destructive" }
 > = {
-  active: { text: "已訂閱", variant: "default" },
-  unpaid: { text: "未完成付款", variant: "destructive" },
-  grace: { text: "已取消", variant: "secondary" },
-  ended: { text: "已結束", variant: "outline" },
+  active: { textKey: "plan.badge.active", variant: "default" },
+  unpaid: { textKey: "plan.badge.unpaid", variant: "destructive" },
+  grace: { textKey: "plan.badge.grace", variant: "secondary" },
+  ended: { textKey: "plan.badge.ended", variant: "outline" },
 };
 
 function PlanCard({
@@ -80,6 +81,8 @@ function PlanCard({
   current: Subscription | undefined;
 }) {
   const queryClient = useQueryClient();
+  const t = useT();
+  const title = t(plan.titleKey);
   const [editing, setEditing] = useState(false);
   const [price, setPrice] = useState("");
   const state = cardState(current);
@@ -92,7 +95,7 @@ function PlanCard({
     onSuccess: async (result) => {
       // "checkout" has already replaced the page with the ECPay cashier.
       if (result !== "updated") return;
-      toast.success(`已更新 ${plan.title} 的目標價`);
+      toast.success(t("plan.targetUpdated", { plan: title }));
       setEditing(false);
       setPrice("");
       await queryClient.invalidateQueries({ queryKey: ["subscriptions", email] });
@@ -103,7 +106,7 @@ function PlanCard({
   const cancel = useMutation({
     mutationFn: () => cancelSubscription({ email, route: plan.route }),
     onSuccess: async () => {
-      toast.success(`已取消 ${plan.title} 訂閱，已付費期間內仍會通知你`);
+      toast.success(t("plan.cancelled", { plan: title }));
       await queryClient.invalidateQueries({ queryKey: ["subscriptions", email] });
     },
     onError: (err: Error) => toast.error(err.message),
@@ -113,7 +116,7 @@ function PlanCard({
     e.preventDefault();
     const n = Number(price);
     if (!Number.isFinite(n) || n <= 0) {
-      toast.error("請輸入正確的目標價 (TWD)");
+      toast.error(t("plan.invalidPrice"));
       return;
     }
     mutation.mutate({ target_price: Math.round(n) });
@@ -121,9 +124,7 @@ function PlanCard({
 
   function confirmCancel() {
     if (
-      window.confirm(
-        `確定要取消 ${plan.title} 訂閱嗎？之後不會再扣款，${endDate ?? "本期結束"} 前仍會通知你。`,
-      )
+      window.confirm(t("plan.confirmCancel", { plan: title, end: endDate ?? t("plan.periodEnd") }))
     ) {
       cancel.mutate();
     }
@@ -133,34 +134,42 @@ function PlanCard({
   const showForm = state === "none" || state === "ended" || editing;
   const inputId = `target-${plan.name}`;
   const submitLabel = mutation.isPending
-    ? "送出中…"
+    ? t("plan.sending")
     : paid
-      ? "儲存"
-      : `訂閱並付款 NT$${MONTHLY_PRICE_TWD}/月`;
+      ? t("plan.save")
+      : t("plan.subscribePay", { price: MONTHLY_PRICE_TWD });
 
   return (
     <div className="label-card rounded-[2rem] p-6">
       <div className="flex items-center justify-between gap-2">
         <h2 className="font-display flex items-center gap-2 text-2xl text-card-foreground">
-          <Plane className="size-5" /> {plan.title}
+          <Plane className="size-5" /> {title}
         </h2>
-        {state !== "none" && <Badge variant={BADGE[state].variant}>{BADGE[state].text}</Badge>}
+        {state !== "none" && (
+          <Badge variant={BADGE[state].variant}>{t(BADGE[state].textKey)}</Badge>
+        )}
       </div>
-      <p className="mt-2 text-sm text-muted-foreground">最近最低價約 {twd(plan.hint)}</p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        {t("plan.recentLow", { price: twd(plan.hint) })}
+      </p>
 
       {current && state !== "ended" && !editing && (
         <div className="mt-4">
-          <p className="text-card-foreground">目前目標價：{twd(current.target_price)}</p>
+          <p className="text-card-foreground">
+            {t("plan.currentTarget", { price: twd(current.target_price) })}
+          </p>
           {state === "active" && endDate && (
-            <p className="mt-1 text-sm text-muted-foreground">本期有效至 {endDate}，每月自動續訂</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("plan.activeUntil", { end: endDate })}
+            </p>
           )}
           {state === "grace" && (
             <p className="mt-1 text-sm text-muted-foreground">
-              有效至 {endDate}（仍會通知到該日，之後不再扣款）
+              {t("plan.graceUntil", { end: endDate ?? "" })}
             </p>
           )}
           {state === "unpaid" && (
-            <p className="mt-1 text-sm text-muted-foreground">付款完成後才會開始寄送降價通知。</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t("plan.unpaidNote")}</p>
           )}
           <div className="mt-4 flex flex-wrap gap-2">
             {state === "unpaid" && (
@@ -168,11 +177,13 @@ function PlanCard({
                 onClick={() => mutation.mutate({ target_price: current.target_price })}
                 disabled={busy}
               >
-                {mutation.isPending ? "前往付款…" : `完成付款 NT$${MONTHLY_PRICE_TWD}/月`}
+                {mutation.isPending
+                  ? t("plan.redirecting")
+                  : t("plan.completePay", { price: MONTHLY_PRICE_TWD })}
               </Button>
             )}
             <Button variant="outline" onClick={() => setEditing(true)} disabled={busy}>
-              更新目標價
+              {t("plan.updateTarget")}
             </Button>
             {state === "grace" && (
               <Button
@@ -181,12 +192,14 @@ function PlanCard({
                 }
                 disabled={busy}
               >
-                {mutation.isPending ? "前往付款…" : `重新訂閱 NT$${MONTHLY_PRICE_TWD}/月`}
+                {mutation.isPending
+                  ? t("plan.redirecting")
+                  : t("plan.resubscribePay", { price: MONTHLY_PRICE_TWD })}
               </Button>
             )}
             {state === "active" && (
               <Button variant="ghost" onClick={confirmCancel} disabled={busy}>
-                {cancel.isPending ? "取消中…" : "取消訂閱"}
+                {cancel.isPending ? t("plan.cancelling") : t("plan.cancelSubscription")}
               </Button>
             )}
           </div>
@@ -194,12 +207,12 @@ function PlanCard({
       )}
 
       {state === "ended" && !editing && (
-        <p className="mt-4 text-sm text-muted-foreground">訂閱已結束，重新付款即可恢復通知。</p>
+        <p className="mt-4 text-sm text-muted-foreground">{t("plan.endedNote")}</p>
       )}
 
       {showForm && (
         <form onSubmit={submit} className="mt-4 space-y-3">
-          <Label htmlFor={inputId}>目標價 (TWD)</Label>
+          <Label htmlFor={inputId}>{t("plan.targetLabel")}</Label>
           <Input
             id={inputId}
             type="number"
@@ -214,13 +227,13 @@ function PlanCard({
             <Button type="submit" disabled={busy}>
               {state === "ended" && !editing
                 ? mutation.isPending
-                  ? "送出中…"
-                  : "重新訂閱"
+                  ? t("plan.sending")
+                  : t("plan.resubscribe")
                 : submitLabel}
             </Button>
             {editing && (
               <Button type="button" variant="ghost" onClick={() => setEditing(false)}>
-                取消
+                {t("plan.cancel")}
               </Button>
             )}
           </div>

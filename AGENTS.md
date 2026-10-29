@@ -4,3 +4,4 @@
 - This is a static Vite + React Router SPA (no SSR). Routes are declared in `src/router.tsx`; page components live in `src/routes/`.
 - Signed-in pages are children of the `authenticated` route in `src/router.tsx` (client-only loader gate redirecting to `/auth`); public pages stay top-level.
 - Colors, gradients and glows are tokens/utilities in `src/styles.css`; components use them, never raw colors. The visual theme is a beige "sardine label" look (paper, cobalt ink, olive, lemon): page backgrounds use `bg-paper`, panels use `label-card`, the product name uses `brand-name` (black Courgette cursive, no frame); ornaments live in `src/components/Ornaments.tsx`. No text fade-in.
+- UI text is translated (中文 / English / Français) via `src/lib/i18n.ts`: add every user-visible string to all three dictionaries and read it with `useT()` (or `translate()` outside React); never hard-code copy in components. The language dropdown is `src/components/LanguageSelect.tsx`.

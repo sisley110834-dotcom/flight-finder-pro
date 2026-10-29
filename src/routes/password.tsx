@@ -6,21 +6,16 @@ import { Brand } from "@/components/Brand";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { usePageMeta, type MetaTag } from "@/lib/head";
-
-const forgotMeta: MetaTag[] = [
-  { title: "Forgot password — Flight Price Notifier" },
-  { name: "robots", content: "noindex" },
-];
-
-const resetMeta: MetaTag[] = [
-  { title: "Reset password — Flight Price Notifier" },
-  { name: "robots", content: "noindex" },
-];
+import { LanguageSelect } from "@/components/LanguageSelect";
+import { usePageMeta } from "@/lib/head";
+import { useT } from "@/lib/i18n";
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-paper bg-hero-glow px-4">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-paper bg-hero-glow px-4">
+      <div className="absolute right-4 top-4">
+        <LanguageSelect />
+      </div>
       <div className="mb-8">
         <Brand />
       </div>
@@ -31,7 +26,11 @@ function Shell({ children }: { children: React.ReactNode }) {
 
 // Sends a Supabase recovery email whose link lands on /reset-password.
 export function ForgotPassword() {
-  usePageMeta(forgotMeta);
+  const t = useT();
+  usePageMeta([
+    { title: `${t("password.forgotTitle")} — Flight Price Notifier` },
+    { name: "robots", content: "noindex" },
+  ]);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -53,17 +52,15 @@ export function ForgotPassword() {
   return (
     <Shell>
       <div>
-        <h1 className="font-display text-2xl text-card-foreground">忘記密碼 · Forgot password</h1>
+        <h1 className="font-display text-2xl text-card-foreground">{t("password.forgotTitle")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {sent
-            ? "重設連結已寄出，請到信箱收信。 · Check your email for a reset link."
-            : "輸入註冊的 Email，我們會寄重設密碼連結給你。"}
+          {sent ? t("password.forgotSent") : t("password.forgotSub")}
         </p>
       </div>
       {!sent && (
         <form onSubmit={onSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("auth.email")}</Label>
             <Input
               className="bg-card"
               id="email"
@@ -75,13 +72,13 @@ export function ForgotPassword() {
             />
           </div>
           <Button type="submit" variant="hero" className="w-full" disabled={loading}>
-            {loading ? "…" : "Send reset link / 寄送連結"}
+            {loading ? "…" : t("password.sendLink")}
           </Button>
         </form>
       )}
       <p className="text-center text-sm text-muted-foreground">
         <Link to="/auth" className="text-primary hover:underline">
-          Back to sign in / 回到登入
+          {t("password.backToSignIn")}
         </Link>
       </p>
     </Shell>
@@ -90,7 +87,11 @@ export function ForgotPassword() {
 
 // Landing page for the recovery link: Supabase signs the user in from the URL, then they set a new password.
 export function ResetPassword() {
-  usePageMeta(resetMeta);
+  const t = useT();
+  usePageMeta([
+    { title: `${t("password.resetTitle")} — Flight Price Notifier` },
+    { name: "robots", content: "noindex" },
+  ]);
   const navigate = useNavigate();
   const [ready, setReady] = useState<boolean | null>(null);
   const [password, setPassword] = useState("");
@@ -113,24 +114,22 @@ export function ResetPassword() {
       toast.error(error.message);
       return;
     }
-    toast.success("密碼已更新 · Password updated");
+    toast.success(t("password.updated"));
     navigate("/app", { replace: true });
   }
 
   return (
     <Shell>
       <div>
-        <h1 className="font-display text-2xl text-card-foreground">設定新密碼 · New password</h1>
+        <h1 className="font-display text-2xl text-card-foreground">{t("password.resetTitle")}</h1>
         {ready === false && (
-          <p className="mt-1 text-sm text-muted-foreground">
-            連結無效或已過期，請重新申請。 · This link is invalid or expired.
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{t("password.invalidLink")}</p>
         )}
       </div>
       {ready ? (
         <form onSubmit={onSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="password">New password / 新密碼</Label>
+            <Label htmlFor="password">{t("password.newPassword")}</Label>
             <Input
               className="bg-card"
               id="password"
@@ -143,14 +142,14 @@ export function ResetPassword() {
             />
           </div>
           <Button type="submit" variant="hero" className="w-full" disabled={loading}>
-            {loading ? "…" : "Save / 儲存"}
+            {loading ? "…" : t("password.save")}
           </Button>
         </form>
       ) : (
         ready === false && (
           <p className="text-center text-sm">
             <Link to="/forgot-password" className="text-primary hover:underline">
-              Send a new link / 重新寄送
+              {t("password.sendNewLink")}
             </Link>
           </p>
         )

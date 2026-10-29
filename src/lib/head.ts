@@ -6,6 +6,8 @@ export type MetaTag =
 // Client-side replacement for per-route `head()` meta: applies the tags while the
 // page is mounted and restores the previous values (from index.html) on unmount.
 export function usePageMeta(meta: MetaTag[]) {
+  // Re-apply when the content changes (e.g. the UI language switches).
+  const key = JSON.stringify(meta);
   useEffect(() => {
     const restore: Array<() => void> = [];
     for (const tag of meta) {
@@ -31,7 +33,7 @@ export function usePageMeta(meta: MetaTag[]) {
       el.content = tag.content;
     }
     return () => restore.reverse().forEach((fn) => fn());
-    // Meta arrays are static per page.
+    // `key` captures the meta content; the array identity changes every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [key]);
 }
